@@ -21,14 +21,6 @@ fn get_svg_path() -> Data {
                 
                 let data = Data::parse(data).unwrap();
                 dataToReturn = data.clone();
-                
-                for command in data.iter() {
-                    match command {
-                        &Command::Move(..) => println!("Move!"),
-                        &Command::Line(..) => println!("Line!"),
-                        _ => println!("other")
-                    }
-                }
             }
             _ => {}
         }
@@ -37,40 +29,32 @@ fn get_svg_path() -> Data {
 }
 
 use svg::Document;
-use svg::node::element::Path;
+use svg::node::element::{Path, Circle};
 
-fn create_border() -> Data {
-    return Data::new()
-    .move_to((0, 0))
-    .line_by((0, 25))
-    .line_by((25, 0))
-    .line_by((0, -25))
-    .close();
-}
-
-fn create_border_path(data: Data) -> Path {
-    return Path::new()
-    .set("fill", "none")
-    .set("stroke", "black")
-    .set("stroke-width", 2)
-    .set("d", data);
+fn create_filled_circle() -> Circle {
+    return Circle::new()
+    .set("fill", "blue")
+    .set("cx", "11.5")
+    .set("cy", "12")
+    .set("r", "12");
 }
 
 fn create_mdi_path(data: Data) -> Path {
     return Path::new()
+    .set("fill", "white")
     .set("d", data);
 }
 
 pub fn create_svg() {
-    let data = create_border();
-    let path = create_border_path(data);
 
     let data3 = get_svg_path();
     let path3 = create_mdi_path(data3);
 
+    let circle = create_filled_circle();
+
 let document = Document::new()
-    .set("viewBox", (0, 0, 50, 50))
-    .add(path)
+    .set("viewBox", (0, 0, 24, 24))
+    .add(circle)
     .add(path3);
 
 svg::save("image.svg", &document).unwrap();
