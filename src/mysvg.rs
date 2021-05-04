@@ -66,7 +66,7 @@ pub fn create_svg() {
     let under_circle = create_under_circle();
 
     let document = Document::new()
-        .set("viewBox", (-20, -20, 250, 250))
+        .set("viewBox", (-5, -5, 35, 40))
         .add(under_circle)
         .add(circle)
         .add(path3);
