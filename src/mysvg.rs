@@ -24,24 +24,21 @@ fn get_svg_path() -> Data {
 use svg::Document;
 use svg::node::element::{Path, Circle};
 
-fn create_filled_circle() -> Circle {
-    return Circle::new()
-    .set("fill", "orange")
-    .set("cx", "11.5")
-    .set("cy", "13")
-    .set("stroke", "gray")
-    .set("stroke-width", ".35")
-    .set("r", "16");
+struct CircleConfig {
+    center_x: f32,
+    center_y: f32,
+    fill_color: String,
+    radius: f32
 }
 
-fn create_under_circle() -> Circle {
+fn create_circle(config: CircleConfig) -> Circle {
     return Circle::new()
-    .set("fill", "white")
-    .set("cx", "13.5")
-    .set("cy", "16")
+    .set("fill", config.fill_color)
+    .set("cx", config.center_x)
+    .set("cy", config.center_y)
     .set("stroke", "gray")
     .set("stroke-width", ".35")
-    .set("r", "16");
+    .set("r", config.radius);
 }
 
 fn create_mdi_path(data: Data) -> Path {
@@ -51,42 +48,61 @@ fn create_mdi_path(data: Data) -> Path {
 }
 
 struct Bounds {
-    width: i32,
-    height: i32,
-    x: i32,
-    y: i32
-}
-
-impl Bounds {
-    pub fn new(x: i32, y: i32, width: i32, height: i32) -> Self {
-        Bounds {
-            x,
-            y,
-            width,
-            height
-        }
-    }
+    width: f32,
+    height: f32,
+    x: f32,
+    y: f32
 }
 
 pub fn create_svg() {
-    let mdi_bounds = Bounds::new(0, 0, 24, 24);
+    // Expected bounds for material design icons.
+    let mdi_bounds = Bounds {
+        x: 0.0,
+        y: 0.0,
+        width: 24.0,
+        height: 24.0
+    };
 
-    let room_for_border = 5;
-    let room_for_3d_height = 10;
-    let room_for_3d_width = 6;
+    let room_for_border = 3.0;
+    let room_for_3d_height = 10.0;
+    let room_for_3d_width = 8.0;
 
-    let view_box_x = mdi_bounds.x - room_for_border;
-    let view_box_y = mdi_bounds.y - room_for_border;
+    let view_box_x = mdi_bounds.x - 5.0;
+    let view_box_y = mdi_bounds.y - 4.0;
     let view_box_width = mdi_bounds.width + room_for_border + room_for_3d_width;
     let view_box_height = mdi_bounds.height + room_for_border + room_for_3d_height;
+
+    let _bottom_right_x = view_box_height + view_box_y;
+    let _bottom_right_y = view_box_width + view_box_x;
+
+    let center_x = view_box_x + (view_box_width / 2.0);
+    let center_y = view_box_y + (view_box_height / 2.0); 
+
+
 
     let view_box = (view_box_x, view_box_y, view_box_width, view_box_height);
 
     let data3 = get_svg_path();
     let path3 = create_mdi_path(data3);
 
-    let circle = create_filled_circle();
-    let under_circle = create_under_circle();
+    let color_circle_config = CircleConfig {
+        center_x: center_x,
+        center_y: center_y,
+        fill_color: String::from("orange"),
+        radius: 16.0
+    };
+
+    println!("{} {}", center_x, center_y);
+
+    let background_circle_config = CircleConfig {
+        center_x: center_x + 2.0,
+        center_y: center_y + 2.0,
+        fill_color: String::from("white"),
+        radius: 16.0
+    };
+
+    let circle = create_circle(color_circle_config);
+    let under_circle = create_circle(background_circle_config);
 
     let document = Document::new()
         .set("viewBox", view_box)
