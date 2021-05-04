@@ -1,3 +1,6 @@
+mod mysvg;
+use mysvg::create_svg;
+
 fn main() {
-    println!("Hello, world!");
+    create_svg();
 }
