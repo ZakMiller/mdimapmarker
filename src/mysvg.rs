@@ -2,13 +2,6 @@ use svg::node::element::path::{Command, Data};
 use svg::node::element::tag::Path;
 use svg::parser::Event;
 
-// TODO
-// get bounding box
-// get fill
-// get stroke
-// get stroke width
-// get data
-
 fn get_svg_path() -> Data {
     let path = "images/account-group.svg";
     let mut content = String::new();
@@ -57,7 +50,37 @@ fn create_mdi_path(data: Data) -> Path {
     .set("d", data);
 }
 
+struct Bounds {
+    width: i32,
+    height: i32,
+    x: i32,
+    y: i32
+}
+
+impl Bounds {
+    pub fn new(x: i32, y: i32, width: i32, height: i32) -> Self {
+        Bounds {
+            x,
+            y,
+            width,
+            height
+        }
+    }
+}
+
 pub fn create_svg() {
+    let mdi_bounds = Bounds::new(0, 0, 24, 24);
+
+    let room_for_border = 5;
+    let room_for_3d_height = 10;
+    let room_for_3d_width = 6;
+
+    let view_box_x = mdi_bounds.x - room_for_border;
+    let view_box_y = mdi_bounds.y - room_for_border;
+    let view_box_width = mdi_bounds.width + room_for_border + room_for_3d_width;
+    let view_box_height = mdi_bounds.height + room_for_border + room_for_3d_height;
+
+    let view_box = (view_box_x, view_box_y, view_box_width, view_box_height);
 
     let data3 = get_svg_path();
     let path3 = create_mdi_path(data3);
@@ -66,7 +89,7 @@ pub fn create_svg() {
     let under_circle = create_under_circle();
 
     let document = Document::new()
-        .set("viewBox", (-5, -5, 35, 40))
+        .set("viewBox", view_box)
         .add(under_circle)
         .add(circle)
         .add(path3);
