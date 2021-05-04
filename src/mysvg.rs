@@ -10,7 +10,7 @@ use svg::parser::Event;
 // get data
 
 fn get_svg_path() -> Data {
-    let path = "images/airplane.svg";
+    let path = "images/account-group.svg";
     let mut content = String::new();
     let mut dataToReturn = Data::new();
     
@@ -33,10 +33,22 @@ use svg::node::element::{Path, Circle};
 
 fn create_filled_circle() -> Circle {
     return Circle::new()
-    .set("fill", "blue")
+    .set("fill", "orange")
     .set("cx", "11.5")
-    .set("cy", "12")
-    .set("r", "12");
+    .set("cy", "13")
+    .set("stroke", "gray")
+    .set("stroke-width", ".35")
+    .set("r", "16");
+}
+
+fn create_under_circle() -> Circle {
+    return Circle::new()
+    .set("fill", "white")
+    .set("cx", "13.5")
+    .set("cy", "16")
+    .set("stroke", "gray")
+    .set("stroke-width", ".35")
+    .set("r", "16");
 }
 
 fn create_mdi_path(data: Data) -> Path {
@@ -51,11 +63,13 @@ pub fn create_svg() {
     let path3 = create_mdi_path(data3);
 
     let circle = create_filled_circle();
+    let under_circle = create_under_circle();
 
-let document = Document::new()
-    .set("viewBox", (0, 0, 24, 24))
-    .add(circle)
-    .add(path3);
+    let document = Document::new()
+        .set("viewBox", (-20, -20, 250, 250))
+        .add(under_circle)
+        .add(circle)
+        .add(path3);
 
-svg::save("image.svg", &document).unwrap();
+    svg::save("image.svg", &document).unwrap();
 }
