@@ -52,8 +52,18 @@ struct Bounds {
     y: f32
 }
 
-pub fn create_svg(in_file: &String, out_file: &String) {
-    // Expected bounds for material design icons.
+impl Bounds {
+    fn tuple(&self) -> (f32, f32, f32, f32) {
+        return (self.x, self.y, self.width, self.height)
+    }
+}
+
+struct Point {
+    x: f32,
+    y: f32
+}
+
+fn get_bounds() -> (Point, f32, Bounds) {
     let mdi_bounds = Bounds {
         x: 0.0,
         y: 0.0,
@@ -72,28 +82,42 @@ pub fn create_svg(in_file: &String, out_file: &String) {
 
     let _bottom_right_x = view_box_height + view_box_y;
     let _bottom_right_y = view_box_width + view_box_x;
+    let center = Point {
+        x: view_box_x + (view_box_width / 2.0),
+        y: view_box_y + (view_box_height / 2.0)
+    };
 
-    let center_x = view_box_x + (view_box_width / 2.0);
-    let center_y = view_box_y + (view_box_height / 2.0); 
+    let radius = (view_box_height / 2.0) - (room_for_border);
+    let view_box = Bounds {
+        x: view_box_x,
+        y: view_box_y,
+        width: view_box_width,
+        height: view_box_height
+    };
+    return (center, radius, view_box);
 
-    let view_box = (view_box_x, view_box_y, view_box_width, view_box_height);
+}
+
+pub fn create_svg(in_file: &String, out_file: &String) {
+    // Expected bounds for material design icons.
+    
 
     let data3 = get_svg_path(in_file);
     let path3 = create_mdi_path(data3);
 
-    let radius = (view_box_height / 2.0) - (room_for_border);
+    let (center, radius, view_box) = get_bounds();
 
     let color_circle_config = CircleConfig {
-        center_x: center_x,
-        center_y: center_y,
+        center_x: center.x,
+        center_y: center.y,
         fill_color: String::from("#ED7014"),
         radius: radius
     };
 
     let background_offset = 2.0;
     let background_circle_config = CircleConfig {
-        center_x: center_x + background_offset,
-        center_y: center_y + background_offset,
+        center_x: center.x + background_offset,
+        center_y: center.y + background_offset,
         fill_color: String::from("white"),
         radius: radius
     };
@@ -102,7 +126,7 @@ pub fn create_svg(in_file: &String, out_file: &String) {
     let under_circle = create_circle(background_circle_config);
 
     let document = Document::new()
-        .set("viewBox", view_box)
+        .set("viewBox", view_box.tuple())
         .add(under_circle)
         .add(circle)
         .add(path3);
