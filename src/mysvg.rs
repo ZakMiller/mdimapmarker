@@ -5,7 +5,7 @@ use svg::parser::Event;
 fn get_svg_path() -> Data {
     let path = "images/account-group.svg";
     let mut content = String::new();
-    let mut dataToReturn = Data::new();
+    let mut data_to_return = Data::new();
     
     for event in svg::open(path, &mut content).unwrap() {
         match event {
@@ -13,12 +13,12 @@ fn get_svg_path() -> Data {
                 let data = attributes.get("d").unwrap();
                 
                 let data = Data::parse(data).unwrap();
-                dataToReturn = data.clone();
+                data_to_return = data.clone();
             }
             _ => {}
         }
     }
-   return dataToReturn;
+   return data_to_return;
 }
 
 use svg::Document;
