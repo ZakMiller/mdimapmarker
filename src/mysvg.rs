@@ -1,8 +1,7 @@
 use svg::node::element::path::{Command, Data};
 use svg::node::element::tag::Path;
 use svg::parser::Event;
-fn get_svg_path() -> Data {
-    let path = "images/account-group.svg";
+fn get_svg_path(path: &String) -> Data {
     let mut content = String::new();
     let mut data_to_return = Data::new();
     
@@ -53,7 +52,7 @@ struct Bounds {
     y: f32
 }
 
-pub fn create_svg(out_file: &String) {
+pub fn create_svg(in_file: &String, out_file: &String) {
     // Expected bounds for material design icons.
     let mdi_bounds = Bounds {
         x: 0.0,
@@ -79,11 +78,10 @@ pub fn create_svg(out_file: &String) {
 
     let view_box = (view_box_x, view_box_y, view_box_width, view_box_height);
 
-    let data3 = get_svg_path();
+    let data3 = get_svg_path(in_file);
     let path3 = create_mdi_path(data3);
 
     let radius = (view_box_height / 2.0) - (room_for_border);
-    println!("{}", radius);
 
     let color_circle_config = CircleConfig {
         center_x: center_x,
@@ -91,8 +89,6 @@ pub fn create_svg(out_file: &String) {
         fill_color: String::from("#ED7014"),
         radius: radius
     };
-
-    println!("{} {}", center_x, center_y);
 
     let background_offset = 2.0;
     let background_circle_config = CircleConfig {
