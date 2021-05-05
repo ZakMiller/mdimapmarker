@@ -78,27 +78,29 @@ pub fn create_svg() {
     let center_x = view_box_x + (view_box_width / 2.0);
     let center_y = view_box_y + (view_box_height / 2.0); 
 
-
-
     let view_box = (view_box_x, view_box_y, view_box_width, view_box_height);
 
     let data3 = get_svg_path();
     let path3 = create_mdi_path(data3);
 
+    let radius = (view_box_height / 2.0) - (room_for_border);
+    println!("{}", radius);
+
     let color_circle_config = CircleConfig {
         center_x: center_x,
         center_y: center_y,
         fill_color: String::from("orange"),
-        radius: 16.0
+        radius: radius
     };
 
     println!("{} {}", center_x, center_y);
 
+    let background_offset = 2.0;
     let background_circle_config = CircleConfig {
-        center_x: center_x + 2.0,
-        center_y: center_y + 2.0,
+        center_x: center_x + background_offset,
+        center_y: center_y + background_offset,
         fill_color: String::from("white"),
-        radius: 16.0
+        radius: radius
     };
 
     let circle = create_circle(color_circle_config);
