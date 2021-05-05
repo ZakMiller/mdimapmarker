@@ -88,7 +88,7 @@ pub fn create_svg(out_file: &String) {
     let color_circle_config = CircleConfig {
         center_x: center_x,
         center_y: center_y,
-        fill_color: String::from("orange"),
+        fill_color: String::from("#ED7014"),
         radius: radius
     };
 
