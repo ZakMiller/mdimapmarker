@@ -1,7 +1,6 @@
 use svg::node::element::path::{Command, Data};
 use svg::node::element::tag::Path;
 use svg::parser::Event;
-
 fn get_svg_path() -> Data {
     let path = "images/account-group.svg";
     let mut content = String::new();
@@ -54,7 +53,7 @@ struct Bounds {
     y: f32
 }
 
-pub fn create_svg() {
+pub fn create_svg(out_file: &String) {
     // Expected bounds for material design icons.
     let mdi_bounds = Bounds {
         x: 0.0,
@@ -112,5 +111,5 @@ pub fn create_svg() {
         .add(circle)
         .add(path3);
 
-    svg::save("image.svg", &document).unwrap();
+    svg::save(out_file, &document).unwrap();
 }
