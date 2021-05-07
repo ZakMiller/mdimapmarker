@@ -16,7 +16,7 @@ fn get_svg_path(path: &String) -> Data {
             _ => {}
         }
     }
-    return data_to_return;
+    data_to_return
 }
 
 use svg::node::element::{Circle, Path};
@@ -30,17 +30,17 @@ struct CircleConfig {
 }
 
 fn create_circle(config: CircleConfig) -> Circle {
-    return Circle::new()
+    Circle::new()
         .set("fill", config.fill_color)
         .set("cx", config.center_x)
         .set("cy", config.center_y)
         .set("stroke", "gray")
         .set("stroke-width", ".35")
-        .set("r", config.radius);
+        .set("r", config.radius)
 }
 
 fn create_mdi_path(data: Data) -> Path {
-    return Path::new().set("fill", "white").set("d", data);
+    Path::new().set("fill", "white").set("d", data)
 }
 
 struct Bounds {
@@ -52,7 +52,7 @@ struct Bounds {
 
 impl Bounds {
     fn tuple(&self) -> (f32, f32, f32, f32) {
-        return (self.x, self.y, self.width, self.height);
+        (self.x, self.y, self.width, self.height)
     }
 }
 
@@ -62,6 +62,7 @@ struct Point {
 }
 
 fn get_bounds() -> (Point, f32, Bounds) {
+    // Expected bounds for material design icons.
     let mdi_bounds = Bounds {
         x: 0.0,
         y: 0.0,
@@ -92,12 +93,10 @@ fn get_bounds() -> (Point, f32, Bounds) {
         width: view_box_width,
         height: view_box_height,
     };
-    return (center, radius, view_box);
+    (center, radius, view_box)
 }
 
 pub fn create_svg(in_file: &String, out_file: &String) {
-    // Expected bounds for material design icons.
-
     let data3 = get_svg_path(in_file);
     let path3 = create_mdi_path(data3);
 
