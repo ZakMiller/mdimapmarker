@@ -2,10 +2,12 @@
 
 A CLI utility to transform [material design icons](https://materialdesignicons.com/) to icons that look good on a map.
 
+It modifies the `.svg` and then renders it to a `.png`.
+
 ## Usage
 
 ```bash
-cargo run images/account-group.svg image.svg
+cargo run images/account-group.svg image.png
 ```
 
 ## Input
@@ -14,4 +16,4 @@ cargo run images/account-group.svg image.svg
 
 ## Output
 
-![Output](image.svg)
+![Output](image.png)
