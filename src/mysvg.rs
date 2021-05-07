@@ -4,63 +4,61 @@ use svg::parser::Event;
 fn get_svg_path(path: &String) -> Data {
     let mut content = String::new();
     let mut data_to_return = Data::new();
-    
+
     for event in svg::open(path, &mut content).unwrap() {
         match event {
             Event::Tag(Path, _, attributes) => {
                 let data = attributes.get("d").unwrap();
-                
+
                 let data = Data::parse(data).unwrap();
                 data_to_return = data.clone();
             }
             _ => {}
         }
     }
-   return data_to_return;
+    return data_to_return;
 }
 
+use svg::node::element::{Circle, Path};
 use svg::Document;
-use svg::node::element::{Path, Circle};
 
 struct CircleConfig {
     center_x: f32,
     center_y: f32,
     fill_color: String,
-    radius: f32
+    radius: f32,
 }
 
 fn create_circle(config: CircleConfig) -> Circle {
     return Circle::new()
-    .set("fill", config.fill_color)
-    .set("cx", config.center_x)
-    .set("cy", config.center_y)
-    .set("stroke", "gray")
-    .set("stroke-width", ".35")
-    .set("r", config.radius);
+        .set("fill", config.fill_color)
+        .set("cx", config.center_x)
+        .set("cy", config.center_y)
+        .set("stroke", "gray")
+        .set("stroke-width", ".35")
+        .set("r", config.radius);
 }
 
 fn create_mdi_path(data: Data) -> Path {
-    return Path::new()
-    .set("fill", "white")
-    .set("d", data);
+    return Path::new().set("fill", "white").set("d", data);
 }
 
 struct Bounds {
     width: f32,
     height: f32,
     x: f32,
-    y: f32
+    y: f32,
 }
 
 impl Bounds {
     fn tuple(&self) -> (f32, f32, f32, f32) {
-        return (self.x, self.y, self.width, self.height)
+        return (self.x, self.y, self.width, self.height);
     }
 }
 
 struct Point {
     x: f32,
-    y: f32
+    y: f32,
 }
 
 fn get_bounds() -> (Point, f32, Bounds) {
@@ -68,7 +66,7 @@ fn get_bounds() -> (Point, f32, Bounds) {
         x: 0.0,
         y: 0.0,
         width: 24.0,
-        height: 24.0
+        height: 24.0,
     };
 
     let room_for_border = 3.0;
@@ -84,7 +82,7 @@ fn get_bounds() -> (Point, f32, Bounds) {
     let _bottom_right_y = view_box_width + view_box_x;
     let center = Point {
         x: view_box_x + (view_box_width / 2.0),
-        y: view_box_y + (view_box_height / 2.0)
+        y: view_box_y + (view_box_height / 2.0),
     };
 
     let radius = (view_box_height / 2.0) - (room_for_border);
@@ -92,15 +90,13 @@ fn get_bounds() -> (Point, f32, Bounds) {
         x: view_box_x,
         y: view_box_y,
         width: view_box_width,
-        height: view_box_height
+        height: view_box_height,
     };
     return (center, radius, view_box);
-
 }
 
 pub fn create_svg(in_file: &String, out_file: &String) {
     // Expected bounds for material design icons.
-    
 
     let data3 = get_svg_path(in_file);
     let path3 = create_mdi_path(data3);
@@ -111,7 +107,7 @@ pub fn create_svg(in_file: &String, out_file: &String) {
         center_x: center.x,
         center_y: center.y,
         fill_color: String::from("#ED7014"),
-        radius: radius
+        radius: radius,
     };
 
     let background_offset = 2.0;
@@ -119,7 +115,7 @@ pub fn create_svg(in_file: &String, out_file: &String) {
         center_x: center.x + background_offset,
         center_y: center.y + background_offset,
         fill_color: String::from("white"),
-        radius: radius
+        radius: radius,
     };
 
     let circle = create_circle(color_circle_config);
