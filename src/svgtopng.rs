@@ -1,4 +1,6 @@
-pub fn render_svg(path: String) {
+use std::path::PathBuf;
+
+pub fn render_svg(path: PathBuf) {
     let path = std::path::Path::new(&path);
     let svg = nsvg::parse_file(path, nsvg::Units::Pixel, 96.0).unwrap();
 

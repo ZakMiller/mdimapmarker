@@ -1,7 +1,9 @@
+use std::path::PathBuf;
+
 use svg::node::element::path::{Command, Data};
 use svg::node::element::tag::Path;
 use svg::parser::Event;
-fn get_svg_path(path: &String) -> Data {
+fn get_svg_path(path: &PathBuf) -> Data {
     let mut content = String::new();
     let mut data_to_return = Data::new();
 
@@ -96,7 +98,7 @@ fn get_bounds() -> (Point, f32, Bounds) {
     (center, radius, view_box)
 }
 
-pub fn create_svg(in_file: &String, out_file: &String) {
+pub fn create_svg(in_file: &PathBuf, out_file: &PathBuf) {
     let data3 = get_svg_path(in_file);
     let path3 = create_mdi_path(data3);
 
